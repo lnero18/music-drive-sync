@@ -17,11 +17,19 @@ jobs:
         run: |
           echo "${{ secrets.GDRIVE_KEY_B64 }}" | base64 --decode > gdrive-creds.json
 
-      - name: Install gdrive binary from working fork release
+      - name: Install gdrive CLI (confirmed working version)
         run: |
-          curl -L https://github.com/danieleds/gdrive/releases/download/2.1.0/gdrive-linux-x64 -o gdrive
+          sudo apt-get update
+          sudo apt-get install -y unzip
+          curl -L -o gdrive.zip https://github.com/glendc/gdrive/releases/download/2.1.1/gdrive-linux-x64.zip
+          unzip gdrive.zip
           chmod +x gdrive
           sudo mv gdrive /usr/local/bin/gdrive
+
+      - name: Debug gdrive binary
+        run: |
+          head -n 10 /usr/local/bin/gdrive || echo "Failed to read gdrive"
+          file /usr/local/bin/gdrive || echo "Could not determine file type"
 
       - name: Upload files to Drive
         run: |
