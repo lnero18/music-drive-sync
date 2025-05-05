@@ -3,7 +3,7 @@ name: Upload Music with gdrive CLI
 on:
   push:
     paths:
-      - "**/*"
+      - "**/*.mp3"
   workflow_dispatch:
 
 jobs:
@@ -18,12 +18,9 @@ jobs:
         run: |
           echo "${{ secrets.GDRIVE_KEY_B64 }}" | base64 --decode > gdrive-creds.json
 
-      - name: Install gdrive CLI (from community-maintained fork)
+      - name: Install gdrive CLI (known working binary)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y unzip
-          wget https://github.com/glavin001/gdrive/releases/download/2.1.1/gdrive-linux-x64.zip -O gdrive.zip
-          unzip gdrive.zip
+          wget -O gdrive https://github.com/prasmussen/gdrive/releases/download/2.1.1/gdrive-linux-x64
           chmod +x gdrive
           sudo mv gdrive /usr/local/bin/gdrive
 
@@ -31,7 +28,7 @@ jobs:
         run: |
           mkdir -p ~/.gdrive
           cp gdrive-creds.json ~/.gdrive/token_v2.json
-          gdrive about || echo "Connected!"
+          gdrive about
           for file in $(find . -type f -name '*.mp3'); do
             echo "Uploading $file"
             gdrive upload --parent 1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E "$file"
