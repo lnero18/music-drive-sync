@@ -19,7 +19,7 @@ jobs:
 
       - name: Install gdrive binary
         run: |
-          curl -L -o gdrive https://github.com/prasmussen/gdrive/releases/download/2.1.0/gdrive-linux-x64
+          curl -L -o gdrive https://raw.githubusercontent.com/glotlabs/gdrive-binary/main/gdrive-linux-x64
           chmod +x gdrive
           sudo mv gdrive /usr/local/bin/gdrive
 
