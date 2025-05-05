@@ -5,7 +5,8 @@ on:
     paths:
       - "**/*.mp3"
       - "**/*.jpg"
-      - ".github/workflows/upload.yml"
+      - "**/*.png"
+      - "**/*.jpeg"
 
 jobs:
   upload:
@@ -19,9 +20,10 @@ jobs:
         run: |
           echo "${{ secrets.GDRIVE_KEY_B64 }}" | base64 --decode > gdrive-creds.json
 
-      - name: Install gdrive binary (maintained fork)
+      - name: Install gdrive binary from community fork
         run: |
-          wget https://github.com/twolfson/gdrive/releases/latest/download/gdrive-linux-x64 -O gdrive
+          wget -O gdrive.zip https://github.com/tjol/gdrive/releases/download/2.1.1/gdrive-linux-x64.zip
+          unzip gdrive.zip
           chmod +x gdrive
           sudo mv gdrive /usr/local/bin/gdrive
 
@@ -30,7 +32,7 @@ jobs:
           mkdir -p ~/.gdrive
           cp gdrive-creds.json ~/.gdrive/token_v2.json
           gdrive about || echo "Connected!"
-          for file in $(find . -type f \( -iname '*.mp3' -o -iname '*.jpg' \)); do
+          for file in $(find . -type f \( -name '*.mp3' -o -name '*.jpg' -o -name '*.png' -o -name '*.jpeg' \)); do
             echo "Uploading $file"
             gdrive upload --parent 1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E "$file"
           done
