@@ -9,12 +9,13 @@ jobs:
   upload:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Upload everything in the repo
-        uses: vijaykramesh/google-drive-upload-git-action@v1.0.0
+      - name: Upload music to Google Drive
+        uses: alemayhu/google-drive-upload@v1.0.0
         with:
           credentials: ${{ secrets.GDRIVE_KEY_B64 }}
-          folder: "1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E"
-          target: "."  # Upload everything from root of repo
+          folderId: "1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E"
+          overwrite: true
+          name: "MusicUpload"
