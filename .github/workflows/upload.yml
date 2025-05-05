@@ -1,4 +1,4 @@
-name: Upload All Music to Google Drive
+name: Upload Music with gdrive CLI
 
 on:
   push:
@@ -8,13 +8,26 @@ on:
 jobs:
   upload:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Upload to Google Drive
-        uses: tsu-nera/google-drive-upload-action@v1
-        with:
-          credentials: ${{ secrets.GDRIVE_KEY_B64 }}
-          folder-id: "1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E"
-          src: "."
+      - name: Set up Google credentials
+        run: |
+          echo "${{ secrets.GDRIVE_KEY_B64 }}" | base64 --decode > gdrive-creds.json
+
+      - name: Install gdrive binary
+        run: |
+          curl -L -o gdrive.tar.gz https://github.com/prasmussen/gdrive/releases/download/2.1.0/gdrive-linux-x64.tar.gz
+          tar -xzf gdrive.tar.gz
+          sudo install gdrive /usr/local/bin/gdrive
+
+      - name: Upload files to Drive
+        run: |
+          export GDRIVE_TOKEN_FILE=gdrive-creds.json
+          gdrive about || echo "Connected!"
+          for file in $(find . -type f -name '*.mp3'); do
+            echo "Uploading $file"
+            gdrive upload --parent 1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E "$file"
+          done
