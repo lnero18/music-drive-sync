@@ -12,10 +12,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Upload music to Google Drive
-        uses: alemayhu/google-drive-upload@v1.0.0
+      - name: Upload to Google Drive
+        uses: tsu-nera/google-drive-upload-action@v1
         with:
           credentials: ${{ secrets.GDRIVE_KEY_B64 }}
-          folderId: "1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E"
-          overwrite: true
-          name: "MusicUpload"
+          folder-id: "1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E"
+          src: "."
