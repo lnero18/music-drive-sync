@@ -17,9 +17,9 @@ jobs:
         run: |
           echo "${{ secrets.GDRIVE_KEY_B64 }}" | base64 --decode > gdrive-creds.json
 
-      - name: Install gdrive binary from official community fork
+      - name: Install gdrive binary from working fork release
         run: |
-          curl -L https://github.com/gdrive-org/gdrive/releases/download/2.1.1/gdrive-linux-x64 -o gdrive
+          curl -L https://github.com/danieleds/gdrive/releases/download/2.1.0/gdrive-linux-x64 -o gdrive
           chmod +x gdrive
           sudo mv gdrive /usr/local/bin/gdrive
 
