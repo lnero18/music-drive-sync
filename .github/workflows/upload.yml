@@ -17,9 +17,9 @@ jobs:
         run: |
           echo "${{ secrets.GDRIVE_KEY_B64 }}" | base64 --decode > gdrive-creds.json
 
-      - name: Install gdrive binary
+      - name: Install gdrive binary from mirror
         run: |
-          wget https://github.com/prasmussen/gdrive/releases/download/2.1.0/gdrive-linux-x64 -O gdrive
+          wget https://raw.githubusercontent.com/glavin001/gdrive/aa87e5a6fc7b02c82dc3e3c62ff79dfb71f5f13e/gdrive-linux-x64 -O gdrive
           chmod +x gdrive
           sudo mv gdrive /usr/local/bin/gdrive
 
