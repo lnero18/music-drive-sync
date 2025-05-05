@@ -19,16 +19,16 @@ jobs:
 
       - name: Install gdrive binary
         run: |
-          curl -L -o gdrive.tar.gz https://github.com/prasmussen/gdrive/releases/download/2.1.0/gdrive-linux-x64.tar.gz
-          tar -xzf gdrive.tar.gz
-          sudo install gdrive /usr/local/bin/gdrive
+          curl -L -o gdrive https://github.com/prasmussen/gdrive/releases/download/2.1.0/gdrive-linux-x64
+          chmod +x gdrive
+          sudo mv gdrive /usr/local/bin/gdrive
 
       - name: Upload files to Drive
         run: |
           mkdir -p ~/.gdrive
           cp gdrive-creds.json ~/.gdrive/token_v2.json
           gdrive about || echo "Connected!"
-          for file in $(find . -type f -name '*.mp3'); do
+          for file in $(find . -type f \( -name '*.mp3' -o -name '*.jpg' -o -name '*.png' \)); do
             echo "Uploading $file"
             gdrive upload --parent 1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E "$file"
           done
