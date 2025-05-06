@@ -15,10 +15,10 @@ jobs:
         run: |
           echo "${{ secrets.GDRIVE_KEY_B64 }}" | base64 --decode > service-account.json
 
-      - name: Use Docker container to upload
+      - name: Upload to Google Drive via Docker (twolfs/gdrive)
         run: |
           docker run --rm \
             -v "$PWD:/data" \
             -v "$PWD/service-account.json:/service-account.json" \
-            ghcr.io/gliderlabs/gdrive:latest \
+            twolfs/gdrive \
             --service-account /service-account.json upload /data
