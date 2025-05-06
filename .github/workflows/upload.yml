@@ -1,28 +1,23 @@
 name: Upload Music with gdrive CLI
 
 on:
-  push:
-    paths:
-      - "**/*.mp3"
   workflow_dispatch:
 
 jobs:
   upload:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Set up service account key
         run: |
-          echo "${{ secrets.GDRIVE_KEY_B64 }}" | base64 --decode > service-account.json
+          echo "${{ secrets.GDRIVE_KEY_B64 }}" | base64 --decode > key.json
 
       - name: Upload files to Google Drive using Dockerized gdrive
         run: |
           docker run --rm \
-            -v $PWD:/data \
-            -v $PWD/service-account.json:/root/.gdrive/token_v2.json \
-            --workdir /data \
-            epiclabs/docker-gdrive \
-            upload --parent 1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E ./*.mp3
+            -v "${{ github.workspace }}:/data" \
+            -v "${{ github.workspace }}/key.json:/key.json" \
+            gdrive-org/gdrive \
+            --service-account /key.json upload /data
