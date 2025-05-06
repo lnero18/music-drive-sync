@@ -1,4 +1,4 @@
-name: Upload to Google Drive (via gdrive-action)
+name: Upload to Google Drive
 
 on:
   workflow_dispatch:
@@ -11,10 +11,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Upload files using gdrive-action
-        uses: gsuitedevs/gdrive-action@v1
+      - name: Upload files to Google Drive
+        uses: tj-actions/gdrive@v3
         with:
-          service-account-json: ${{ secrets.GDRIVE_KEY_B64 }}
-          folder-id: 1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E
+          service_account_key: ${{ secrets.GDRIVE_KEY_B64 }}
+          folder_id: 1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E
           files: |
             **
