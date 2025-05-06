@@ -19,5 +19,5 @@ jobs:
           docker run --rm \
             -v "${{ github.workspace }}:/data" \
             -v "${{ github.workspace }}/key.json:/key.json" \
-            gdrive-org/gdrive \
+            gdrivecli/gdrive:latest \
             --service-account /key.json upload /data
