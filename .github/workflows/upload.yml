@@ -1,4 +1,4 @@
-name: Upload Music with gdrive CLI
+name: Upload to Google Drive (via gdrive-action)
 
 on:
   workflow_dispatch:
@@ -8,17 +8,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Decode service account key
-        run: |
-          echo "${{ secrets.GDRIVE_KEY_B64 }}" | base64 --decode > service-account.json
-
-      - name: Upload to Google Drive via Docker (gdrive-org/gdrive)
-        run: |
-          docker run --rm \
-            -v "$PWD:/data" \
-            -v "$PWD/service-account.json:/service-account.json" \
-            gdrive-org/gdrive \
-            --service-account /service-account.json upload /data
+      - name: Upload files using gdrive-action
+        uses: gsuitedevs/gdrive-action@v1
+        with:
+          service-account-json: ${{ secrets.GDRIVE_KEY_B64 }}
+          folder-id: 1YXV9je0GKjoCcytKkOqKEPPUv2dnwL-E
+          files: |
+            **
